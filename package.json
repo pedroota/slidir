@@ -15,7 +15,8 @@
 		"dev": "next dev --turbo",
 		"preview": "next build && next start",
 		"start": "next start",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@t3-oss/env-nextjs": "^0.12.0",
@@ -39,6 +40,8 @@
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
 		"drizzle-kit": "^0.30.5",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.1",
 		"postcss": "^8.5.3",
 		"tailwindcss": "^4.0.15",
 		"typescript": "^5.8.2"
@@ -46,5 +49,11 @@
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
 	},
-	"packageManager": "pnpm@9.15.3"
+	"packageManager": "pnpm@9.15.3",
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": [
+			"pnpm typecheck",
+			"pnpm check:unsafe"
+		]
+	}
 }
