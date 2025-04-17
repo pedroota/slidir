@@ -1,0 +1,1 @@
+ALTER TABLE "slidir_user" DROP COLUMN "is_premium";
