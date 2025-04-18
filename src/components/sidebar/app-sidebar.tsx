@@ -51,7 +51,7 @@ export function AppSidebar() {
 	const pathname = usePathname();
 
 	return (
-		<Sidebar collapsible="icon">
+		<Sidebar collapsible="offcanvas">
 			<SidebarHeader className="px-5 pt-4 group-data-[collapsible=icon]:items-center">
 				<div className="-ml-1 flex items-center gap-2">
 					<Image src="/logo.png" alt="Slidir" priority width={50} height={50} />
