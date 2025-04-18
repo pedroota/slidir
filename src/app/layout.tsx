@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/react";
+import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 
@@ -12,11 +13,67 @@ export const metadata: Metadata = {
 	icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const satoshi = localFont({
+	src: [
+		{
+			path: "../fonts/Satoshi-Black.woff2",
+			weight: "900",
+			style: "normal",
+		},
+		{
+			path: "../fonts/Satoshi-BlackItalic.woff2",
+			weight: "900",
+			style: "italic",
+		},
+		{
+			path: "../fonts/Satoshi-Bold.woff2",
+			weight: "700",
+			style: "normal",
+		},
+		{
+			path: "../fonts/Satoshi-BoldItalic.woff2",
+			weight: "700",
+			style: "italic",
+		},
+		{
+			path: "../fonts/Satoshi-Italic.woff2",
+			weight: "400",
+			style: "italic",
+		},
+		{
+			path: "../fonts/Satoshi-Light.woff2",
+			weight: "300",
+			style: "normal",
+		},
+		{
+			path: "../fonts/Satoshi-LightItalic.woff2",
+			weight: "300",
+			style: "italic",
+		},
+		{
+			path: "../fonts/Satoshi-Medium.woff2",
+			weight: "500",
+			style: "normal",
+		},
+		{
+			path: "../fonts/Satoshi-MediumItalic.woff2",
+			weight: "500",
+			style: "italic",
+		},
+		{
+			path: "../fonts/Satoshi-Regular.woff2",
+			weight: "400",
+			style: "normal",
+		},
+	],
+	variable: "--font-satoshi",
+});
+
 export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en" className={satoshi.className} suppressHydrationWarning>
 			<body>
 				<NuqsAdapter>
 					<TRPCReactProvider>

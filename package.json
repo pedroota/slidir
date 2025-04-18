@@ -77,8 +77,6 @@
 	},
 	"packageManager": "pnpm@9.15.3",
 	"lint-staged": {
-		"src/**/*.{ts,tsx}": [
-			"pnpm check:unsafe"
-		]
+		"src/**/*.{ts,tsx}": ["pnpm check:unsafe"]
 	}
 }

@@ -27,9 +27,9 @@ export default async function Authenticate() {
 			</section>
 
 			<section className="flex w-full flex-col items-center justify-center gap-12 lg:max-w-1/2">
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-2">
 					<Image src="/logo.png" alt="Slidir" width={50} height={50} />
-					<p className="font-medium text-3xl">Slidir</p>
+					<p className="font-medium text-2xl">Slidir</p>
 				</div>
 
 				<AuthenticateForm />

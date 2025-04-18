@@ -1,10 +1,19 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Component, Home, LogOut, Settings, Trash } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+	Component,
+	Headphones,
+	Home,
+	LogOut,
+	Settings,
+	Star,
+	Trash,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -18,8 +27,9 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "./ui/sidebar";
+import { Skeleton } from "./ui/skeleton";
 
-const items = [
+const sidebarItems = [
 	{
 		title: "Home",
 		url: "/presentations",
@@ -44,9 +54,12 @@ const items = [
 
 export function AppSidebar() {
 	const router = useRouter();
+	const pathname = usePathname();
 	const { data: session, isPending } = authClient.useSession();
 
 	const user = session?.user;
+
+	console.log(pathname);
 
 	const fallbackName = user?.name
 		? user.name.slice(0, 2)?.toUpperCase()
@@ -64,35 +77,84 @@ export function AppSidebar() {
 	return (
 		<Sidebar collapsible="icon">
 			<SidebarHeader className="px-5 group-data-[collapsible=icon]:items-center">
-				<div className="flex items-center gap-3">
+				<div className="-ml-1 flex items-center gap-2">
 					<Image src="/logo.png" alt="Slidir" priority width={50} height={50} />
-					<p className="font-medium text-3xl group-data-[collapsible=icon]:hidden">
+					<p className="font-medium text-2xl group-data-[collapsible=icon]:hidden">
 						Slidir
 					</p>
 				</div>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent className="justify-between py-8">
 				<SidebarGroup>
 					<SidebarGroupContent>
-						<SidebarMenu className="gap-4 group-data-[collapsible=icon]:items-center">
-							{items.map((item) => (
-								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild>
-										<Link href={item.url}>
-											<item.icon className="!size-6" />
-											<span className="!text-base">{item.title}</span>
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
+						<SidebarMenu className="gap-4 px-2 text-muted-foreground group-data-[collapsible=icon]:items-center">
+							{sidebarItems.map((sidebarItem) => {
+								const isActive = pathname === sidebarItem.url;
+
+								return (
+									<SidebarMenuItem
+										key={sidebarItem.title}
+										className={cn("rounded-md", {
+											"before:-translate-y-1/2 before:-left-4 bg-foreground/5 before:absolute before:top-1/2 before:h-5 before:w-1 before:rounded-r-lg before:bg-primary before:content-[''] group-data-[collapsible=icon]:before:hidden":
+												isActive,
+										})}
+									>
+										<SidebarMenuButton className="py-5" asChild>
+											<Link
+												href={sidebarItem.url}
+												className="flex items-center gap-4"
+											>
+												<sidebarItem.icon
+													className={cn("!size-6", {
+														"text-primary": isActive,
+													})}
+												/>
+												<span className="!text-base font-medium">
+													{sidebarItem.title}
+												</span>
+											</Link>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								);
+							})}
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+
+				<SidebarGroup>
+					<SidebarGroupContent>
+						<SidebarMenu className="gap-4 px-2 text-muted-foreground group-data-[collapsible=icon]:items-center">
+							<SidebarMenuItem>
+								<SidebarMenuButton asChild className="hover:bg-transparent">
+									<Link href="#" className="flex items-center gap-4">
+										<Headphones className="!size-6" />
+										<span className="!text-base font-medium">Support</span>
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+
+							<SidebarMenuItem>
+								<SidebarMenuButton asChild className="hover:bg-transparent">
+									<Link href="#" className="flex items-center gap-4">
+										<Star className="!size-6" />
+										<span className="!text-base font-medium">
+											Feature request
+										</span>
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
 
-			{isPending ? null : (
-				<SidebarFooter className="flex flex-row items-center justify-between group-data-[collapsible=icon]:justify-center">
+			{isPending ? (
+				<div className="w-full px-5 pb-1">
+					<Skeleton className="h-14 w-full" />
+				</div>
+			) : (
+				<SidebarFooter className="flex flex-row items-center justify-between px-5 group-data-[collapsible=icon]:justify-center">
 					<div className="flex items-center gap-3">
 						<Avatar>
 							<AvatarFallback>{fallbackName}</AvatarFallback>
@@ -100,7 +162,7 @@ export function AppSidebar() {
 						</Avatar>
 
 						<div className="-mt-1 flex flex-col justify-center overflow-hidden group-data-[collapsible=icon]:hidden">
-							<span className="max-w-32 truncate font-semibold text-base">
+							<span className="max-w-32 truncate font-medium text-base">
 								{user?.name?.length ? user?.name : user?.email?.split("@")[0]}
 							</span>
 
