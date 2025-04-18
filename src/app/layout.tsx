@@ -67,6 +67,7 @@ const satoshi = localFont({
 		},
 	],
 	variable: "--font-satoshi",
+	preload: false,
 });
 
 export default function RootLayout({
