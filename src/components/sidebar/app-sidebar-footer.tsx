@@ -1,5 +1,6 @@
 import { authClient } from "@/lib/auth-client";
-import { ChevronsUpDown, CreditCard, LogOut } from "lucide-react";
+import { ChevronsUpDown, CreditCard, LogOut, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
@@ -16,6 +17,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export function AppSidebarFooter() {
 	const { isMobile } = useSidebar();
+	const { theme, setTheme } = useTheme();
 	const router = useRouter();
 	const { data: session, isPending } = authClient.useSession();
 
@@ -97,6 +99,12 @@ export function AppSidebarFooter() {
 								<DropdownMenuItem>
 									<CreditCard />
 									Billing
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+								>
+									{theme === "dark" ? <Sun /> : <Moon />}
+									{theme === "dark" ? "Light" : "Dark"}
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
 							<DropdownMenuSeparator />
