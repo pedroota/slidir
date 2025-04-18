@@ -255,7 +255,7 @@ export function AuthenticateForm() {
 							) : (
 								<Icons.Google />
 							)}
-							Sign up with Google
+							Sign in with Google
 						</Button>
 
 						<div className="my-6 flex items-center gap-2">
@@ -293,10 +293,10 @@ export function AuthenticateForm() {
 										type="submit"
 										className="h-12 w-full rounded-xl"
 									>
-										{isAuthLoading ? (
+										{isPendingSendVerificationOtp ? (
 											<Loader className="mr-2 h-4 w-4 animate-spin" />
 										) : null}
-										Sign up with email
+										Sign in with email
 									</Button>
 								</div>
 							</form>
