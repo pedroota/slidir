@@ -1,33 +1,28 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import {
 	Component,
 	Headphones,
 	Home,
-	LogOut,
 	Settings,
 	Star,
 	Trash,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "./ui/sidebar";
-import { Skeleton } from "./ui/skeleton";
+} from "../ui/sidebar";
+import { AppSidebarFooter } from "./app-sidebar-footer";
 
 const sidebarItems = [
 	{
@@ -53,24 +48,7 @@ const sidebarItems = [
 ];
 
 export function AppSidebar() {
-	const router = useRouter();
 	const pathname = usePathname();
-	const { data: session, isPending } = authClient.useSession();
-
-	const user = session?.user;
-
-	const fallbackName = user?.name
-		? user.name.slice(0, 2)?.toUpperCase()
-		: user?.email
-			? user.email.slice(0, 2)?.toUpperCase()
-			: "SL";
-
-	const profileImage = session?.user?.image ?? undefined;
-
-	const handleSignout = async () => {
-		await authClient.signOut();
-		router.replace("/authenticate");
-	};
 
 	return (
 		<Sidebar collapsible="icon">
@@ -147,39 +125,7 @@ export function AppSidebar() {
 				</SidebarGroup>
 			</SidebarContent>
 
-			{isPending ? (
-				<div className="h-16 w-full px-5 pb-2">
-					<Skeleton className="h-14 w-full" />
-				</div>
-			) : (
-				<SidebarFooter className="flex h-16 flex-row items-center justify-between px-5 pb-4 group-data-[collapsible=icon]:justify-center">
-					<div className="flex items-center gap-3">
-						<Avatar>
-							<AvatarFallback>{fallbackName}</AvatarFallback>
-							<AvatarImage src={profileImage} alt={fallbackName} />
-						</Avatar>
-
-						<div className="-mt-1 flex flex-col justify-center overflow-hidden group-data-[collapsible=icon]:hidden">
-							<span className="max-w-32 truncate font-medium text-base">
-								{user?.name?.length ? user?.name : user?.email?.split("@")[0]}
-							</span>
-
-							<span className="max-w-26 truncate text-muted-foreground text-xs">
-								{user?.email}
-							</span>
-						</div>
-					</div>
-
-					<Button
-						variant="ghost"
-						onClick={handleSignout}
-						className="text-destructive hover:bg-destructive/20 hover:text-destructive group-data-[collapsible=icon]:hidden"
-						size="icon"
-					>
-						<LogOut />
-					</Button>
-				</SidebarFooter>
-			)}
+			<AppSidebarFooter />
 		</Sidebar>
 	);
 }
