@@ -3,9 +3,9 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/components/trpc-provider";
+import { Toaster } from "@/components/ui/sonner";
 import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
 	title: "Slidir",
@@ -84,7 +84,7 @@ export default function RootLayout({
 							disableTransitionOnChange
 						>
 							{children}
-							<Toaster richColors />
+							<Toaster />
 						</ThemeProvider>
 					</TRPCReactProvider>
 				</NuqsAdapter>

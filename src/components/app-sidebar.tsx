@@ -59,8 +59,6 @@ export function AppSidebar() {
 
 	const user = session?.user;
 
-	console.log(pathname);
-
 	const fallbackName = user?.name
 		? user.name.slice(0, 2)?.toUpperCase()
 		: user?.email
@@ -76,7 +74,7 @@ export function AppSidebar() {
 
 	return (
 		<Sidebar collapsible="icon">
-			<SidebarHeader className="px-5 group-data-[collapsible=icon]:items-center">
+			<SidebarHeader className="px-5 pt-4 group-data-[collapsible=icon]:items-center">
 				<div className="-ml-1 flex items-center gap-2">
 					<Image src="/logo.png" alt="Slidir" priority width={50} height={50} />
 					<p className="font-medium text-2xl group-data-[collapsible=icon]:hidden">
@@ -85,7 +83,7 @@ export function AppSidebar() {
 				</div>
 			</SidebarHeader>
 
-			<SidebarContent className="justify-between py-8">
+			<SidebarContent className="justify-between py-4">
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu className="gap-4 px-2 text-muted-foreground group-data-[collapsible=icon]:items-center">
@@ -150,11 +148,11 @@ export function AppSidebar() {
 			</SidebarContent>
 
 			{isPending ? (
-				<div className="w-full px-5 pb-1">
+				<div className="h-16 w-full px-5 pb-2">
 					<Skeleton className="h-14 w-full" />
 				</div>
 			) : (
-				<SidebarFooter className="flex flex-row items-center justify-between px-5 group-data-[collapsible=icon]:justify-center">
+				<SidebarFooter className="flex h-16 flex-row items-center justify-between px-5 pb-4 group-data-[collapsible=icon]:justify-center">
 					<div className="flex items-center gap-3">
 						<Avatar>
 							<AvatarFallback>{fallbackName}</AvatarFallback>
