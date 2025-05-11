@@ -41,6 +41,7 @@
 		"class-variance-authority": "0.7.1",
 		"clsx": "2.1.1",
 		"drizzle-orm": "^0.41.0",
+		"fabric": "6.6.5",
 		"input-otp": "1.4.2",
 		"lucide-react": "0.488.0",
 		"motion": "12.7.3",
@@ -79,6 +80,8 @@
 	},
 	"packageManager": "pnpm@9.15.3",
 	"lint-staged": {
-		"src/**/*.{ts,tsx}": ["pnpm check:unsafe"]
+		"src/**/*.{ts,tsx}": [
+			"pnpm check:unsafe"
+		]
 	}
 }

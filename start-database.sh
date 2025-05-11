@@ -17,7 +17,7 @@ source .env
 
 DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F':' '{print $3}' | awk -F'@' '{print $1}')
 DB_PORT=$(echo "$DATABASE_URL" | awk -F':' '{print $4}' | awk -F'\/' '{print $1}')
-DB_NAME=$(echo "$DATABASE_URL" | awk -F'/' '{print $4}')
+DB_NAME=$(basename "$(echo "$DATABASE_URL" | cut -d'?' -f1)")
 DB_CONTAINER_NAME="$DB_NAME-postgres"
 
 if ! [ -x "$(command -v docker)" ] && ! [ -x "$(command -v podman)" ]; then
@@ -80,4 +80,4 @@ $DOCKER_CMD run -d \
   -e POSTGRES_PASSWORD="$DB_PASSWORD" \
   -e POSTGRES_DB="$DB_NAME" \
   -p "$DB_PORT":5432 \
-  docker.io/postgres && echo "Database container '$DB_CONTAINER_NAME' was successfully created"
+  docker.io/postgres && echo "Database container '$DB_CONTAINER_NAME' was successfully created DB_HOST=$DB_HOST DB_PORT=$DB_PORT DB_USER=postgres DB_PASSWORD=$DB_PASSWORD DB_NAME=$DB_NAME" 

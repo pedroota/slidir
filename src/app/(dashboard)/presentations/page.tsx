@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Plus, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function Presentations() {
 	const data = [];
@@ -21,10 +22,10 @@ export default function Presentations() {
 					</div>
 				</div>
 
-				<Button>
+				<Link href="/editor" className={buttonVariants()}>
 					<Plus />
 					New presentation
-				</Button>
+				</Link>
 			</header>
 
 			{data?.length ? null : (
