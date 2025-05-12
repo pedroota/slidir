@@ -1,3 +1,4 @@
+import { Canvas } from "@/components/canvas";
 import { Button } from "@/components/ui/button";
 import {
 	ChartColumnBig,
@@ -44,7 +45,7 @@ export default function Editor() {
 			</header>
 
 			<div className="flex flex-1">
-				<aside className="flex h-full w-18 flex-col justify-between border-r">
+				<aside className="flex h-full w-18 min-w-18 flex-col justify-between border-r">
 					<div className="flex flex-1 flex-col gap-3 py-5">
 						<Button
 							variant="ghost"
@@ -102,9 +103,9 @@ export default function Editor() {
 					</div>
 				</aside>
 
-				<div className="flex-1">container</div>
+				<Canvas />
 
-				<aside className="min-w-64 border-l">aside</aside>
+				<aside className="w-72 min-w-72 border-l">aside</aside>
 			</div>
 		</section>
 	);
