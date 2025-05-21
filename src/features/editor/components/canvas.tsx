@@ -7,21 +7,26 @@ import { usePresentationStore } from "../store/slide-store";
 export function Canvas() {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const fabricRef = useRef<FabricCanvas>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const { setCanvas } = usePresentationStore();
 
 	useEffect(() => {
-		if (!canvasRef.current || !containerRef.current) return;
+		const canvasElement = canvasRef.current;
+		const containerElement = containerRef.current;
 
-		const canvas = new FabricCanvas(canvasRef.current, {
+		if (!canvasElement || !containerElement) return;
+
+		const canvas = new FabricCanvas(canvasElement, {
 			backgroundColor: "white",
 			controlsAboveOverlay: true,
 			preserveObjectStacking: true,
 		});
 
+		fabricRef.current = canvas;
 		setCanvas(canvas);
 
-		function resizeCanvas() {
+		const resizeCanvas = () => {
 			if (!containerRef.current || !canvasRef.current) return;
 
 			const container = containerRef.current;
@@ -37,7 +42,7 @@ export function Canvas() {
 			const maxWidth = container.clientWidth - paddingX;
 			const maxHeight = container.clientHeight - paddingY;
 
-			let width = maxWidth;
+			let width = maxWidth * 0.85;
 			let height = (width * 9) / 16;
 
 			if (height > maxHeight) {
@@ -49,22 +54,20 @@ export function Canvas() {
 			canvas.setDimensions({ width, height });
 			canvas.calcOffset();
 			canvas.renderAll();
-		}
+		};
 
 		resizeCanvas();
-		window.addEventListener("resize", resizeCanvas);
 
+		window.addEventListener("resize", resizeCanvas);
 		const observer = new ResizeObserver(resizeCanvas);
-		if (observer && containerRef.current) {
-			observer.observe(containerRef.current);
-		}
+		observer.observe(containerElement);
 
 		return () => {
 			window.removeEventListener("resize", resizeCanvas);
-			if (observer && containerRef.current) {
-				observer.unobserve(containerRef.current);
-			}
-			canvas.dispose();
+			observer.disconnect();
+			setCanvas(null);
+			fabricRef.current?.dispose();
+			fabricRef.current = null;
 		};
 	}, [setCanvas]);
 
@@ -77,7 +80,7 @@ export function Canvas() {
 				ref={canvasRef}
 				width={size.width}
 				height={size.height}
-				className="block max-h-full max-w-full"
+				className="block max-h-full max-w-full border"
 				style={{
 					width: `${size.width}px`,
 					height: `${size.height}px`,

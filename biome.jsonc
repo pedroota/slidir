@@ -20,6 +20,9 @@
 					}
 				}
 			},
+			"correctness": {
+				"useExhaustiveDependencies": "off"
+			},
 			"recommended": true
 		}
 	}
