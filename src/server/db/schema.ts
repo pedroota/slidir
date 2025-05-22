@@ -1,4 +1,14 @@
-import { boolean, pgTableCreator, text, timestamp } from "drizzle-orm/pg-core";
+import { createId } from "@paralleldrive/cuid2";
+import {
+	boolean,
+	index,
+	integer,
+	jsonb,
+	pgTableCreator,
+	text,
+	timestamp,
+	uniqueIndex,
+} from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -68,3 +78,51 @@ export const verification = createTable("verification", {
 		() => new Date(),
 	),
 });
+
+export const presentation = createTable("presentation", {
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => createId()),
+	content: text("content").notNull(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	createdAt: timestamp("created_at", { withTimezone: true })
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updated_at", { withTimezone: true })
+		.notNull()
+		.$onUpdate(() => new Date()),
+});
+
+export const slides = createTable(
+	"slides",
+	{
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => createId()),
+		presentationId: text("presentation_id")
+			.notNull()
+			.references(() => presentation.id, { onDelete: "cascade" }),
+		index: integer("index").notNull(), // para manter a ordem dos slides
+		content: jsonb("content").notNull(), // aqui vai o canvas.toJSON()
+		createdAt: timestamp("created_at", { withTimezone: true })
+			.notNull()
+			.defaultNow(),
+		updatedAt: timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.$onUpdate(() => new Date()),
+	},
+	(table) => {
+		return {
+			presentationOrderIndex: index("idx_presentation_order").on(
+				table.presentationId,
+				table.index,
+			),
+			uniqueIndexPerPresentation: uniqueIndex("unique_slide_index").on(
+				table.presentationId,
+				table.index,
+			),
+		};
+	},
+);

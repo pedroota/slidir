@@ -2,7 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import type { Canvas } from "fabric";
 import { create } from "zustand";
 
-interface Slide {
+export interface Slide {
 	id: string;
 	content: string;
 }
@@ -25,12 +25,13 @@ export const usePresentationStore = create<PresentationStore>((set, get) => ({
 
 	setCanvas: (canvas: Canvas | null) => set({ canvas }),
 
-	updateSlide: (slideId, update) =>
-		set((state) => ({
+	updateSlide: (slideId, data) => {
+		return set((state) => ({
 			slides: state.slides.map((slide) =>
-				slide.id === slideId ? { ...slide, ...update } : slide,
+				slide.id === slideId ? { ...slide, ...data } : slide,
 			),
-		})),
+		}));
+	},
 
 	addNewSlide: () => {
 		const { slides, canvas, currentSlideId, updateSlide } = get();
@@ -53,6 +54,7 @@ export const usePresentationStore = create<PresentationStore>((set, get) => ({
 
 		if (canvas) {
 			canvas.clear();
+			// canvas.backgroundColor = "green";
 			canvas.renderAll();
 		}
 	},
